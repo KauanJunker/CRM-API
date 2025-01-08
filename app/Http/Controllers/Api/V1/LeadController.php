@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\LeadCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class LeadController extends Controller
         }
 
         $lead = Lead::create($request->all());
+        event(new LeadCreated($lead));
         return response()->json(['Lead cadastrado com sucesso.', $lead],201);
     }
 

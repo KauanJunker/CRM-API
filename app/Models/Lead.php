@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Lead extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -18,5 +19,10 @@ class Lead extends Model
 
     public function tasks() {
         return $this->hasMany(Task::class);
+    }
+
+    public function routeNotificationFor()
+    {
+        return $this->email;
     }
 }
