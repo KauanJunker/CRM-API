@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -16,7 +18,8 @@ class UserController extends Controller
             'name' =>  'required',
             'email' =>  'email|required',
             'password' =>  'required',
-            'c_password' => 'required|same:password'
+            'c_password' => 'required|same:password',
+            'role_id' => ['required', Rule::in(Role::ROLE_EQUIPE_VENDAS, Role::ROLE_CLIENTE)],
         ]);
 
         if($validated->fails()) {
