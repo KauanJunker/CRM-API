@@ -23,7 +23,7 @@ class UserController extends Controller
         ]);
 
         if($validated->fails()) {
-            return response()->json(['Registro não aprovado', $validated->errors()]);
+            return response()->json(['Registro não aprovado', $validated->errors()], 422);
         }
 
         $input = $request->all();
@@ -31,7 +31,7 @@ class UserController extends Controller
         $user = User::create($input);
         $success['token'] = $user->createToken('myApp')->plainTextToken;
         $success['name'] = $user['name'];   
-        return response()->json(['Usuário cadastrado com sucesso', $success]);
+        return response()->json(['access_token' => $success['token'], $success], 200);
     }
 
     public function login(Request $request) 
