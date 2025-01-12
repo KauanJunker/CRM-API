@@ -17,7 +17,7 @@ class PermissionSeeder extends Seeder
         $allRoles = Role::all()->keyBy('id');
 
         $permissions = [
-            'operation-manage' => [Role::ROLE_EQUIPE_VENDAS],
+            'operation-manage' => [Role::ROLE_ADMINISTRADOR, Role::ROLE_EQUIPE_VENDAS],
             'view-manage' => [Role::ROLE_CLIENTE]
         ];
 
