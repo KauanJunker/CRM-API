@@ -48,6 +48,14 @@ class User extends Authenticatable
         ];
     }
 
+    public function leads() {
+        $this->hasMany(Lead::class);
+    }
+
+    public function contacts() {
+        $this->hasMany(Lead::class);
+    }
+
     public function role()
     {
         $this->belongsTo(Role::class);

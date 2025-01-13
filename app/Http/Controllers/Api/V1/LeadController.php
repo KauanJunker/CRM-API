@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Events\LeadCreated;
+use App\Events\LeadStatusChanged;
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class LeadController extends Controller
@@ -59,6 +62,11 @@ class LeadController extends Controller
         $lead = $this->show($id);
 
         if($lead) {
+            if($lead->status !== $request->input('staus')) {
+             $user = User::find($lead->user_id);   
+             event(new LeadStatusChanged($user, $lead));
+            }
+
             $lead->update($request->all());
             return response()->json(['Lead atualizado com sucesso.', $lead]);
         }

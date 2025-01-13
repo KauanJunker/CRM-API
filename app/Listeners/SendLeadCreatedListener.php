@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendLeadCreatedNotification 
+class SendLeadCreatedListener
 {
     /**
      * Create the event listener.
@@ -25,8 +25,6 @@ class SendLeadCreatedNotification
     public function handle(LeadCreated $event): void
     {
         $lead = $event->lead;
-        // Mail::to('demo@mail.com')->send(new WelcomeEmail());
         $lead->notify(new LeadCreatedNotification($lead));
-        ds($lead);
     }
 }

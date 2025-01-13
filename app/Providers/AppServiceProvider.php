@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use App\Events\LeadCreated;
-use App\Listeners\SendLeadCreatedNotification;
+use App\Events\LeadStatusChanged;
+use App\Listeners\HandleLeadStatusChangedListener;
+use App\Listeners\SendLeadCreatedListener;
+use App\Models\Role;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,7 +28,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(
             LeadCreated::class,
-            SendLeadCreatedNotification::class,
+            SendLeadCreatedListener::class,
+        );
+        Event::listen(
+            LeadStatusChanged::class,
+            HandleLeadStatusChangedListener::class,
         );
     }
 }
