@@ -56,6 +56,10 @@ class User extends Authenticatable
         $this->hasMany(Lead::class);
     }
 
+    public function tasks() {
+        $this->hasMany(Task::class);
+    }
+
     public function role()
     {
         $this->belongsTo(Role::class);

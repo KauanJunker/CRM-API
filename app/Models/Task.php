@@ -16,12 +16,16 @@ class Task extends Model
         'lead_id',    // Opcional: Associar a um lead
     ];
 
+public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     public function contact() {
         return $this->belongsTo(Contact::class);
     }
 
     public function lead()
     {
-        return $this->belongsTo(Lead::class);
+        return $this->has(Lead::class);
     }
 }

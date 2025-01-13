@@ -18,12 +18,12 @@ class Lead extends Model
         'user_id'
     ];
 
-    public function tasks() {
-        return $this->hasMany(Task::class);
-    }
-
     public function user() {
         return $this->belongsTo(User::class);
+    }
+    
+    public function tasks() {
+        return $this->hasMany(Task::class);
     }
 
     public function routeNotificationFor()

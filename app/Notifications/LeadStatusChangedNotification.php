@@ -39,7 +39,7 @@ class LeadStatusChangedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Status do lead ' . $this->lead->name . ' mudou!')
+                    ->subject('Status do lead ' . ' ' . $this->lead->name . ' ' . ' mudou!')
                     ->greeting('Olá ' . $this->user->name . '!')
                     ->line('Estamos informando que o status do seu lead foi alterado para' . ' ' . $this->lead->status)
                     ->line('Acesse mais informações no aplicativo!');
