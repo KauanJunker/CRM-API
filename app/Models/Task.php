@@ -12,11 +12,18 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
+        'user_id',
         'contact_id', // Opcional: Associar a um contato
-        'lead_id',    // Opcional: Associar a um lead
+        'lead_id', // Opcional: Associar a um lead
+        'due_at',
+        'done'   
     ];
 
-public function user() {
+    protected $casts = [
+        'due_at' => 'datetime',
+    ];  
+
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
@@ -26,6 +33,6 @@ public function user() {
 
     public function lead()
     {
-        return $this->has(Lead::class);
+        return $this->belongsTo(Lead::class);
     }
 }

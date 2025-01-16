@@ -49,19 +49,19 @@ class User extends Authenticatable
     }
 
     public function leads() {
-        $this->hasMany(Lead::class);
+        return $this->hasMany(Lead::class);
     }
 
     public function contacts() {
-        $this->hasMany(Lead::class);
+        return $this->hasMany(Lead::class);
     }
 
     public function tasks() {
-        $this->hasMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 
     public function role()
     {
-        $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class);
     }
 }
