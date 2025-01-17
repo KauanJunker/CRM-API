@@ -2,31 +2,35 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\InteractionRecorded;
 use App\Http\Controllers\Controller;
+use App\Models\Interaction;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(Request $request) {
+        if($request->user()->cannot('admin-equipe-vendas')) {
+            abort(401);
+        }
+    }
+
     public function index()
     {
         return Task::with(['contact', 'lead'])->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = Validator::make($request->all(), [
             "title" => "required",
             "description" => "required|string",
+            "user_id" => "required",
             "contact_id" => "nullable|exists:contacts,id",
             "lead_id" => "nullable|exists:leads,id",
+            "due_at" => "required|date_format:Y-m-d H:i:s"
         ]);
 
         if($validated->fails()) {
@@ -37,9 +41,6 @@ class TaskController extends Controller
         return response()->json(["created" => true, $lead]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $task = Task::with(['contact', 'lead'])->find($id);
@@ -51,9 +52,6 @@ class TaskController extends Controller
         return $task;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $task = $this->show($id);
@@ -65,10 +63,7 @@ class TaskController extends Controller
         
         return response()->json('Contato não encontrado.', 404);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+ 
     public function destroy(string $id)
     {
         $task = $this->show($id);
@@ -79,5 +74,21 @@ class TaskController extends Controller
         }
         
         return response()->json('Contato não encotrado.'); 
+    }
+
+    public function completeTask(Request $request, $taskId) 
+    {
+        $task = Task::findOrFail($taskId);
+        $task->update(['done' => true]);
+
+        Interaction::create([
+            'lead_id' => $task->lead_id,
+            'type' => 'task_completed',
+            'details' => 'Tarefa completada' . $task->title,
+        ]);
+
+        event(new InteractionRecorded($task->lead, 'task_completed'));
+
+        return response()->json(['message' => 'Tarefa finalizada.']);
     }
 }

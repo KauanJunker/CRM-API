@@ -26,6 +26,10 @@ class Lead extends Model
         return $this->hasMany(Task::class);
     }
 
+    public function interactions() {
+        return $this->hasMany(Interaction::class);
+    }
+
     public function routeNotificationFor()
     {
         return $this->email;

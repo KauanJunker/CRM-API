@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leads', function (Blueprint $table) {
+        Schema::create('interactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->enum('status', ['novo', 'em negociação', 'fechado', 'perdido'])->default('novo');
+            $table->foreignId('lead_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('contact_id')->nullable()->constrained()->onDelete('cascade');
+            $table->enum('type', ['task_completed', 'email_interaction']);
+            $table->text('details');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leads');
+        Schema::dropIfExists('interactions');
     }
 };

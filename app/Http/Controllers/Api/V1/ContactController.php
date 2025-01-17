@@ -11,18 +11,17 @@ use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(Request $request) {
+        if($request->user()->cannot('admin-equipe-vendas')) {
+            abort(401);
+        }
+    }
+
     public function index()
     {
         return Contact::with('tasks')->get();
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = Validator::make($request->all(), [
@@ -39,9 +38,6 @@ class ContactController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $contact = Contact::with('tasks')->find($id);
@@ -53,10 +49,6 @@ class ContactController extends Controller
         return $contact;
    }
 
-    
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateContactRequest $request, string $id)
     {
         $contact = $this->show($id);
@@ -68,10 +60,7 @@ class ContactController extends Controller
         
         return response()->json('Contato não encontrado.', 404);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
         $contact = $this->show($id);

@@ -13,17 +13,18 @@ use Illuminate\Support\Facades\Validator;
 
 class LeadController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(Request $request) {
+        if($request->user()->cannot('admin-equipe-vendas')) {
+            abort(401);
+        }
+    }
+
+    public function index(Request $request)
     {
         return Lead::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
         $validated = Validator::make($request->all(), [
@@ -40,9 +41,6 @@ class LeadController extends Controller
         return response()->json(['Lead cadastrado com sucesso.', $lead],201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $lead = Lead::find($id);
@@ -54,9 +52,6 @@ class LeadController extends Controller
         return $lead;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $lead = $this->show($id);
@@ -74,9 +69,6 @@ class LeadController extends Controller
         return response()->json('Lead não encontrado.', 404); 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $lead = $this->show($id);

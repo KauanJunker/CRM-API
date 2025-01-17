@@ -7,6 +7,8 @@ use App\Events\LeadStatusChanged;
 use App\Listeners\HandleLeadStatusChangedListener;
 use App\Listeners\SendLeadCreatedListener;
 use App\Models\Role;
+use App\Models\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -34,5 +36,10 @@ class AppServiceProvider extends ServiceProvider
             LeadStatusChanged::class,
             HandleLeadStatusChangedListener::class,
         );
+
+        Gate::define('admin-equipe-vendas', function (User $user) {
+            return in_array($user->role_id, [Role::ROLE_ADMINISTRADOR, Role::ROLE_EQUIPE_VENDAS]);
+        });
     }
 }
+
