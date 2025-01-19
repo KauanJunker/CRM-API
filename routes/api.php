@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\LeadController;
+use App\Http\Controllers\Api\V1\RelatorioController;
 use App\Http\Controllers\Api\V1\TaskController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\GateDefineMiddleware;
@@ -38,4 +39,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->controller(TaskController::clas
     Route::put('task/{id}', 'update');
     Route::patch('task/{id}', 'update');
     Route::delete('task/{id}', 'destroy');
+    Route::get('completeTask/{id}', 'completeTask');
+});
+
+Route::prefix('v1')->middleware('auth:sanctum')->controller(RelatorioController::class)->group(function() {
+    Route::get('quantidadeLeadPorStatus', 'quantidadeLeadPorStatus');
+    Route::get('tarefasPendentes', 'tarefasPendentes');
+    Route::get('tarefasConcluidas', 'tarefasConcluidas');
+    Route::get('contatosLeadsMaisAtivos', 'contatosLeadsMaisAtivos');
 });

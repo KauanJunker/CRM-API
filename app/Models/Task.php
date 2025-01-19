@@ -21,6 +21,7 @@ class Task extends Model
 
     protected $casts = [
         'due_at' => 'datetime',
+        'done' => 'boolean',
     ];  
 
     public function user() {

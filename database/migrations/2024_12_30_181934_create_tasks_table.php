@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('contact_id')->nullable()->constrained('contacts')->onDelete('cascade');
             $table->foreignId('lead_id')->nullable()->constrained('leads')->onDelete('cascade');
             $table->datetime('due_at')->nullable();
+            $table->boolean('done')->nullable()->default(false);
             $table->timestamps();
         });
     }
