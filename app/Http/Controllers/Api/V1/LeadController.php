@@ -43,7 +43,7 @@ class LeadController extends Controller
 
     public function show(string $id)
     {
-        $lead = Lead::find($id);
+        $lead = Lead::with('tasks')->find($id);
 
         if(!$lead) {
             return response()->json("Lead não encontrado.", 404);
