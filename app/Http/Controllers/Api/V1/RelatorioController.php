@@ -22,19 +22,19 @@ class RelatorioController extends Controller
             'Leads em negociação' => $leadsPorStatus->get('em negociação', 0),
             'Leads fechados' => $leadsPorStatus->get('fechado', 0),
             'Leads perdidos' => $leadsPorStatus->get('perdido', 0),
-        ]);
+        ], 200);
     }
 
     public function tarefasPendentes()
     {
         $pendingTasks = Task::where('done', false)->get();
-        return $pendingTasks;
+        return response()->json($pendingTasks, 200);
     }
 
     public function tarefasConcluidas()
     {
         $doneTasks = Task::where('done', true)->get();
-        return $doneTasks;
+        return response()->json($doneTasks, 200);
     }
 
     public function contatosLeadsMaisAtivos()
@@ -47,6 +47,6 @@ class RelatorioController extends Controller
             }
         } 
         
-        return $leadsMaisAtivos;
+        return response()->json($leadsMaisAtivos, 200);
     }
 }

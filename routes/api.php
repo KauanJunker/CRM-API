@@ -39,7 +39,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->controller(TaskController::clas
     Route::put('task/{id}', 'update');
     Route::patch('task/{id}', 'update');
     Route::delete('task/{id}', 'destroy');
-    Route::get('completeTask/{id}', 'completeTask');
+    Route::patch('completeTask/{id}', 'completeTask');
 });
 
 Route::prefix('v1')->middleware('auth:sanctum')->controller(RelatorioController::class)->group(function() {

@@ -27,13 +27,14 @@ class NotifyDeadlineTaskOfUsers extends Command
      */
     public function handle()
     {
-        $users = User::whereHas('tasks')->get();
-        foreach ($users as $user) {
-            foreach($user->tasks as $task) {
-                $deadline = $task->due_at->diff(Carbon::now())->days;
-                ds($deadline);
-                $user->notify("Faltam" . $deadline . "dias para o prazo da sua tarefa!");
-            }
-        }
+        // $users = User::whereHas('tasks')->get();
+        // foreach ($users as $user) {
+        //     foreach($user->tasks as $task) {
+        //         $deadline = $task->due_at->diff(Carbon::now())->days;
+        //         ds($deadline);
+        //         $user->notify("Faltam" . $deadline . "dias para o prazo da sua tarefa!");
+        //     }
+        // }
+        ds('kauan bonitinho');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Events\InteractionRecorded;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UpdateTaskRequest;
 use App\Models\Interaction;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -34,11 +35,11 @@ class TaskController extends Controller
         ]);
 
         if($validated->fails()) {
-            return response()->json(["message" => "Não foi possível criar o task."]);
+            return response()->json(["message" => "Não foi possível criar a task."]);
         }
 
         $lead = Task::create($request->all());
-        return response()->json(["created" => true, $lead]);
+        return response()->json(["created" => true, $lead], 201);
     }
 
     public function show(string $id)
@@ -46,39 +47,44 @@ class TaskController extends Controller
         $task = Task::with(['contact', 'lead'])->find($id);
 
         if(!$task) {
-           return response()->json("Contato não encontrado.", 404);
+           return response()->json("Task não encontrado.", 404);
         }
 
         return $task;
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateTaskRequest $request, string $id)
     {
-        $task = $this->show($id);
+        $task = Task::findOrFail($id);
 
-        if($task) {
-            $task->update($request->all());
-            return response()->json(['Contato atualizado com sucesso.', $task]);
+        if(!$task) {
+            return response()->json('Task não encontrada.', 404);
         }
         
-        return response()->json('Contato não encontrado.', 404);
+        $task->update($request->all());
+        return response()->json(['Task atualizado com sucesso.', $task], 200);
     }
  
     public function destroy(string $id)
     {
-        $task = $this->show($id);
+        $task = Task::findOrFail($id);
 
-        if($task) {
-            $task->delete();
-            return response()->json('Contato deletado com sucesso.');
+        if(!$task) {
+            return response()->json('Task não encotrada.', 404); 
         }
         
-        return response()->json('Contato não encotrado.'); 
+        $task->delete();
+        return response()->json('Task deletado com sucesso.', 204);
     }
 
     public function completeTask(Request $request, $taskId) 
     {
         $task = Task::findOrFail($taskId);
+
+        if(!$task) {
+            return response()->json('Task não encotrada.', 404); 
+        }
+
         $task->update(['done' => true]);
 
         Interaction::create([
@@ -89,6 +95,6 @@ class TaskController extends Controller
 
         event(new InteractionRecorded($task->lead, 'task_completed'));
 
-        return response()->json(['message' => 'Tarefa finalizada.']);
+        return response()->json(['message' => 'Tarefa finalizada.'], 200);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Events\LeadCreated;
 use App\Events\LeadStatusChanged;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UpdateLeadRequest;
 use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class LeadController extends Controller
         $validated = Validator::make($request->all(), [
             "name" => "required",
             "email" => "required|email",
+            "user_id" => "required"
         ]);
 
         if($validated->fails()) {
@@ -38,7 +40,7 @@ class LeadController extends Controller
 
         $lead = Lead::create($request->all());
         event(new LeadCreated($lead));
-        return response()->json(['Lead cadastrado com sucesso.', $lead],201);
+        return response()->json(['Lead cadastrado com sucesso.', $lead], 201);
     }
 
     public function show(string $id)
@@ -52,32 +54,33 @@ class LeadController extends Controller
         return $lead;
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateLeadRequest $request, string $id)
     {
-        $lead = $this->show($id);
+        $lead = Lead::findOrFail($id);
 
-        if($lead) {
-            if($lead->status !== $request->input('staus')) {
-             $user = User::find($lead->user_id);   
-             event(new LeadStatusChanged($user, $lead));
-            }
-
-            $lead->update($request->all());
-            return response()->json(['Lead atualizado com sucesso.', $lead]);
+        if(!$lead) {
+            return response()->json('Lead não encontrado.', 404); 
         }
 
-        return response()->json('Lead não encontrado.', 404); 
+        if($lead->status !== $request->input('status')) {
+         $user = User::find($lead->user_id);   
+         event(new LeadStatusChanged($user, $lead));
+        }
+
+        $lead->update($request->all());
+        return response()->json(['Lead atualizado com sucesso.', $lead], 200);
+
     }
 
     public function destroy(string $id)
     {
-        $lead = $this->show($id);
+        $lead = Lead::findOrFail($id);
 
-        if($lead) {
-            $lead->delete();
-            return response()->json('Lead deletado com sucesso.');
+        if(!$lead) {
+            return response()->json('Lead não encotrado.', 404); 
         }
         
-        return response()->json('Lead não encotrado.'); 
+        $lead->delete();
+        return response()->json('Lead deletado com sucesso.', 204);
     }
 }

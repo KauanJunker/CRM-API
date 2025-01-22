@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-Schedule::command(NotifyDeadlineTaskOfUsers::class, ['notify-deadline-task-of-users'])->everyMinute();
+Schedule::command('notify-deadline')->everyMinute();

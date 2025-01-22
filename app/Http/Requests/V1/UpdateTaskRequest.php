@@ -34,8 +34,8 @@ class UpdateTaskRequest extends FormRequest
             return [
                 "title" => ["sometimes","required"],
                 "description" => ["sometimes" ,"required", "string"],
-                "contact_id" => ["sometimes" ,"nullable"],
-                "lead_id" => ["sometimes", "nullable"]
+                "contact_id" => ["nullable"],
+                "lead_id" => ["nullable"]
             ];
         }
     }

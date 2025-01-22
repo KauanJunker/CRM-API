@@ -26,7 +26,8 @@ class ContactController extends Controller
     {
         $validated = Validator::make($request->all(), [
             "name" => "required", 
-            "email" => "email"
+            "email" => "email|required",
+            "user_id" => "required"
         ]);
         
         if($validated->fails()) {
@@ -34,8 +35,7 @@ class ContactController extends Controller
         }
 
         $contact = Contact::create($request->all());
-        return response()->json(["created" => true, $contact]);
-        
+        return response()->json(['Contact cadastrado com sucesso.', $contact], 201);
     }
 
     public function show(string $id)
@@ -51,25 +51,25 @@ class ContactController extends Controller
 
     public function update(UpdateContactRequest $request, string $id)
     {
-        $contact = $this->show($id);
+        $contact = Contact::findOrFail($id);
 
-        if($contact) {
-            $contact->update($request->all());
-            return response()->json(['Contato atualizado com sucesso.', $contact]);
+        if(!$contact) {
+            return response()->json('Contato não encontrado.', 404);
         }
         
-        return response()->json('Contato não encontrado.', 404);
+        $contact->update($request->all());
+        return response()->json(['Contato atualizado com sucesso.', $contact], 200);
     }
     
     public function destroy(string $id)
     {
-        $contact = $this->show($id);
+        $contact = Contact::findOrFail($id);
 
-        if($contact) {
-            $contact->delete();
-            return response()->json('Contato deletado com sucesso.');
+        if(!$contact) {
+            return response()->json('Contato não encotrado.', 404);                          
         }
         
-        return response()->json('Contato não encotrado.');                          
+        $contact->delete();
+        return response()->json('Contato deletado com sucesso.', 204);
     }
 }
