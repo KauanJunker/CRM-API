@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\InteractionRecorded;
 use App\Events\LeadCreated;
 use App\Events\LeadStatusChanged;
 use App\Listeners\HandleLeadStatusChangedListener;
 use App\Listeners\SendLeadCreatedListener;
+use App\Listeners\UpdateLeadStatusListener;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -35,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             LeadStatusChanged::class,
             HandleLeadStatusChangedListener::class,
+        );
+        Event::listen(
+            InteractionRecorded::class,
+            UpdateLeadStatusListener::class,
         );
 
         Gate::define('admin-equipe-vendas', function (User $user) {

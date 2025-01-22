@@ -9,6 +9,10 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $seed;
+
     public function test_registration_fails_with_admin_role() 
     {
         $response = $this->postJson('api/v1/register', [

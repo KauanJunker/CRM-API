@@ -7,20 +7,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LeadStatusChangedNotification extends Notification implements ShouldQueue
+class TaskDeadlineNotification extends Notification
 {
     use Queueable;
-
-    protected $user;
-    protected $lead;
-
+    protected $task;
     /**
      * Create a new notification instance.
      */
-    public function __construct($user, $lead)
+    public function __construct($task)
     {
-        $this->user = $user;
-        $this->lead = $lead;
+        $this->task = $task;
     }
 
     /**
@@ -30,7 +26,7 @@ class LeadStatusChangedNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -39,10 +35,10 @@ class LeadStatusChangedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject("Status do lead {$this->lead->name} mudou!")
-                    ->greeting('Olá ' . $this->user->name . '!')
-                    ->line("Estamos informando que o status do seu lead foi alterado para {$this->lead->status}")
-                    ->line('Acesse mais informações no aplicativo!');
+                    ->line('Prazo final da tarefa se aproximando')
+                    ->line("A tarefa' {$this->task->title} está prestes a vencer ou atrasada.")
+                    ->action('View Task', url('/'))
+                    ->line('Por favor, tome uma atitude o mais rápido possível!');
     }
 
     /**
@@ -53,7 +49,9 @@ class LeadStatusChangedNotification extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'task_id' => $this->task->id,
+            'title' => $this->task->title,
+            'due_date' => $this->task->due_date,
         ];
     }
 }

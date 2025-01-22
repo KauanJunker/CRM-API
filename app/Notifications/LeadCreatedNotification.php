@@ -37,8 +37,8 @@ class LeadCreatedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Bem vindo(a)' . $this->lead->name)
-                    ->greeting('Olá ' . $this->lead->name . '!')
+                    ->subject("Bem vindo(a) {$this->lead->name}")
+                    ->greeting("Olá {$this->lead->name}!")
                     ->line('Obrigado por se cadastrar no nosso sistema.')
                     ->line('Estamos animados em trabalhar com você')
                     ->line('Obrigado por nos escolher!');
