@@ -6,12 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Lead;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RelatorioController extends Controller
 {
-    public function quantidadeLeadPorStatus()
+    public function __construct(Request $request) 
+    {
+        if($request->user()->cannot('admin-equipe-vendas')) {
+            abort(401, 'Acesso não autorizado. Apenas administradores ou membros da equipe de vendas podem acessar esta funcionalidade.');
+        }
+    }
+
+    public function quantidadeLeadPorStatus(): JsonResponse
     {
         $leadsPorStatus = Lead::select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
@@ -25,19 +33,19 @@ class RelatorioController extends Controller
         ], 200);
     }
 
-    public function tarefasPendentes()
+    public function tarefasPendentes(): JsonResponse
     {
         $pendingTasks = Task::where('done', false)->get();
         return response()->json($pendingTasks, 200);
     }
 
-    public function tarefasConcluidas()
+    public function tarefasConcluidas(): JsonResponse
     {
         $doneTasks = Task::where('done', true)->get();
         return response()->json($doneTasks, 200);
     }
 
-    public function contatosLeadsMaisAtivos()
+    public function contatosLeadsMaisAtivos(): JsonResponse
     {
         $leadsMaisAtivos = [];
         $leads = Lead::with('tasks')->get();

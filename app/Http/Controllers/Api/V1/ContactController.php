@@ -5,24 +5,27 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\UpdateContactRequest;
 use App\Models\Contact;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
-    public function __construct(Request $request) {
+    public function __construct(Request $request) 
+    {
         if($request->user()->cannot('admin-equipe-vendas')) {
-            abort(401);
+            abort(401, 'Acesso não autorizado. Apenas administradores ou membros da equipe de vendas podem acessar esta funcionalidade.');
         }
     }
 
-    public function index()
+    public function index(): Collection
     {
         return Contact::with('tasks')->get();
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validated = Validator::make($request->all(), [
             "name" => "required", 
@@ -38,7 +41,7 @@ class ContactController extends Controller
         return response()->json(['Contact cadastrado com sucesso.', $contact], 201);
     }
 
-    public function show(string $id)
+    public function show(string $id): Contact
     {
         $contact = Contact::with('tasks')->find($id);
 
@@ -49,7 +52,7 @@ class ContactController extends Controller
         return $contact;
    }
 
-    public function update(UpdateContactRequest $request, string $id)
+    public function update(UpdateContactRequest $request, string $id): JsonResponse
     {
         $contact = Contact::findOrFail($id);
 
@@ -61,7 +64,7 @@ class ContactController extends Controller
         return response()->json(['Contato atualizado com sucesso.', $contact], 200);
     }
     
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         $contact = Contact::findOrFail($id);
 

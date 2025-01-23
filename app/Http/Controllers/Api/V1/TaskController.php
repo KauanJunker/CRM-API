@@ -7,23 +7,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\UpdateTaskRequest;
 use App\Models\Interaction;
 use App\Models\Task;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    public function __construct(Request $request) {
+    public function __construct(Request $request) 
+    {
         if($request->user()->cannot('admin-equipe-vendas')) {
-            abort(401);
+            abort(401, 'Acesso não autorizado. Apenas administradores ou membros da equipe de vendas podem acessar esta funcionalidade.');
         }
     }
 
-    public function index()
+    public function index(): Collection
     {
         return Task::with(['contact', 'lead'])->get();
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validated = Validator::make($request->all(), [
             "title" => "required",
@@ -42,7 +45,7 @@ class TaskController extends Controller
         return response()->json(["created" => true, $lead], 201);
     }
 
-    public function show(string $id)
+    public function show(string $id): Task
     {
         $task = Task::with(['contact', 'lead'])->find($id);
 
@@ -53,7 +56,7 @@ class TaskController extends Controller
         return $task;
     }
 
-    public function update(UpdateTaskRequest $request, string $id)
+    public function update(UpdateTaskRequest $request, string $id): JsonResponse
     {
         $task = Task::findOrFail($id);
 
@@ -65,7 +68,7 @@ class TaskController extends Controller
         return response()->json(['Task atualizado com sucesso.', $task], 200);
     }
  
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         $task = Task::findOrFail($id);
 
@@ -77,7 +80,7 @@ class TaskController extends Controller
         return response()->json('Task deletado com sucesso.', 204);
     }
 
-    public function completeTask(Request $request, $taskId) 
+    public function completeTask(Request $request, $taskId): JsonResponse 
     {
         $task = Task::findOrFail($taskId);
 
