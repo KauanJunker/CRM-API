@@ -33,8 +33,9 @@ class LeadController extends Controller
     {
         $validated = Validator::make($request->all(), [
             "name" => "required",
-            "email" => "required|email",
-            "user_id" => "required"
+            "email" => "required|email|unique",
+            "user_id" => "required",
+            "phone" => "required|string",
         ]);
 
         if($validated->fails()) {

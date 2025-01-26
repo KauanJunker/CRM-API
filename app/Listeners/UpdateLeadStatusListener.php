@@ -28,7 +28,6 @@ class UpdateLeadStatusListener
     public function determineNewStatus($lead, $interactionType) 
     {
         if($interactionType == 'task_completed') {
-            ds('chegou aqui');
             return 'em negociação';
         }
         return $lead['status'];

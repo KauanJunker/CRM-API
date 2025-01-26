@@ -48,16 +48,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function leads() {
+    public function leads() 
+    {
         return $this->hasMany(Lead::class);
     }
 
-    public function contacts() {
+    public function contacts() 
+    {
         return $this->hasMany(Lead::class);
     }
 
-    public function tasks() {
+    public function tasks() 
+    {
         return $this->hasMany(Task::class);
+    }
+    
+    public function appointments()
+    {
+    return $this->hasMany(Appointment::class);
     }
 
     public function role()

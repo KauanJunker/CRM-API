@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AppointmentController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\LeadController;
 use App\Http\Controllers\Api\V1\RelatorioController;
@@ -47,4 +48,13 @@ Route::prefix('v1')->middleware('auth:sanctum')->controller(RelatorioController:
     Route::get('tarefasPendentes', 'tarefasPendentes');
     Route::get('tarefasConcluidas', 'tarefasConcluidas');
     Route::get('contatosLeadsMaisAtivos', 'contatosLeadsMaisAtivos');
+});
+
+Route::prefix('v1')->middleware('auth:sanctum')->controller(AppointmentController::class)->group(function() {
+    Route::get('appointment', 'index');
+    Route::get('appointment/{id}', 'show');
+    Route::post('appointment', 'store');
+    Route::put('appointment/{id}', 'update');
+    Route::patch('appointment/{id}', 'update');
+    Route::delete('appointment/{id}', 'destroy');
 });

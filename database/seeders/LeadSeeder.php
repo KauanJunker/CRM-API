@@ -16,19 +16,21 @@ class LeadSeeder extends Seeder
         Lead::create([
             "name" => "isac Chaves",
             "email" => "isac@gmail.com",
-            "phone" => "999089203",
+            "phone" => "7399089302",
             "status" => "em negociação",
             "user_id" => 2
         ]);
-        Lead::create([   "name" => "Zequinha Nunes",
+        Lead::create([   
+            "name" => "Zequinha Nunes",
             "email" => "zequinha@gmail.com",
-            "phone" => "999999999",
+            "phone" => "7399089302",
             "status" => "novo",
             "user_id" => 2
         ]);
-        Lead::create([   "name" => "Murilo Lima",
+        Lead::create([   
+            "name" => "Murilo Lima",
             "email" => "murilo@gmail.com",
-            "phone" => "999999999",
+            "phone" => "7399089302",
             "status" => "novo",
             "user_id" => 2
         ]);

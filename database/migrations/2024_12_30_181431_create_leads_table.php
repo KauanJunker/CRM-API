@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
+            $table->string('phone');
             $table->enum('status', ['novo', 'em negociação', 'fechado', 'perdido'])->default('novo');
             $table->timestamps();
         });

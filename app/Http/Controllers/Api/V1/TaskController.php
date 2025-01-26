@@ -95,7 +95,6 @@ class TaskController extends Controller
             'type' => 'task_completed',
             'details' => 'Tarefa completada' . $task->title,
         ]);
-        ds($task->lead);
         event(new InteractionRecorded($task->lead, 'task_completed'));
 
         return response()->json(['message' => 'Tarefa finalizada.'], 200);

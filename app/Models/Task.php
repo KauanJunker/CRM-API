@@ -24,11 +24,13 @@ class Task extends Model
         'done' => 'boolean',
     ];  
 
-    public function user() {
+    public function user() 
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function contact() {
+    public function contact() 
+    {
         return $this->belongsTo(Contact::class);
     }
 
