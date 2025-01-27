@@ -33,7 +33,7 @@ class LeadController extends Controller
     {
         $validated = Validator::make($request->all(), [
             "name" => "required",
-            "email" => "required|email|unique",
+            "email" => "required|email|unique:leads",
             "user_id" => "required",
             "phone" => "required|string",
         ]);

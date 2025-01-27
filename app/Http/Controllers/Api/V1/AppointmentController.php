@@ -19,7 +19,7 @@ class AppointmentController extends Controller
 
     public function index(): Collection
     {
-        return Appointment::with('leads')->get();
+        return Appointment::with('lead')->get();
     }
 
     public function store(Request $request): JsonResponse

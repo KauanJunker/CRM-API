@@ -21,7 +21,7 @@ class LeadControllerTest extends TestCase
 
         $response = $this->postJson("api/v1/lead",[
             "name" => "zequi Chaves",
-            "email" => "zequi@gmail.com",
+            "email" => "zequinhanunes2@gmail.com",
             "phone" => "999089302",
             "status" => "em negociação",
             "user_id" => 2
