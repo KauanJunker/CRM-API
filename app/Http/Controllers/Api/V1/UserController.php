@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         $validated = Validator::make($request->all(), [
             'name' =>  'required',
-            'email' =>  'email|required|unique',
+            'email' =>  'email|required',
             'password' =>  'required',
             'c_password' => 'required|same:password',
             'role_id' => ['required', Rule::in(Role::ROLE_EQUIPE_VENDAS, Role::ROLE_CLIENTE)],

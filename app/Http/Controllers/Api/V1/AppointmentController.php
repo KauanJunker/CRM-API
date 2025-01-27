@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
-use App\Utils\Message;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +13,7 @@ class AppointmentController extends Controller
     public function __construct(Request $request) 
     {
         if($request->user()->cannot('admin-equipe-vendas')) {
-            abort(401, Message::AUTHORIZATION);
+            abort(401, 'Acesso não autorizado. Apenas administradores ou membros da equipe de vendas podem acessar esta funcionalidade.');
         }
     }
 
