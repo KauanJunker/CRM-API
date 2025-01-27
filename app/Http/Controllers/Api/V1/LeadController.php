@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\UpdateLeadRequest;
 use App\Models\Lead;
 use App\Models\User;
+use App\Utils\Message;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class LeadController extends Controller
     public function __construct(Request $request) 
     {
         if($request->user()->cannot('admin-equipe-vendas')) {
-            abort(401, 'Acesso não autorizado. Apenas administradores ou membros da equipe de vendas podem acessar esta funcionalidade.');
+            abort(401, Message::AUTHORIZATION);
         }
     }
 
