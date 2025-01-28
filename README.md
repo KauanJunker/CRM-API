@@ -78,7 +78,7 @@ Esta aplicação é uma API de CRM desenvolvida com Laravel, destinada a gerenci
 
 ### Autorização e Permissões
 - Controle de permissões para diferentes tipos de usuários (admin, equipe de vendas).
-- Policies configuradas para operações em leads, contatos e tarefas.
+- Gates configuradas para operações em leads, contatos e tarefas.
 
 ### Relatórios
 - Geração de relatórios sobre:
