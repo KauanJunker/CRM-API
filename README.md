@@ -1,4 +1,4 @@
-# CRM API - Documentação
+# CRM API
 
 Esta aplicação é uma API de CRM desenvolvida com Laravel, destinada a gerenciar leads, contatos e tarefas. Ela inclui autenticação, notificações e relatórios automatizados.
 
@@ -88,17 +88,6 @@ Esta aplicação é uma API de CRM desenvolvida com Laravel, destinada a gerenci
 
 ### Testes
 - Testes unitários para controllers e models.
-
----
-
-## Executando o Projeto
-
-1. Inicie o servidor local:
-   ```bash
-   php artisan serve
-   ```
-
-2. Utilize ferramentas como Postman ou Insomnia para interagir com os endpoints da API.
 
 ---
 
