@@ -72,9 +72,9 @@ Esta aplicação é uma API de CRM desenvolvida com Laravel, destinada a gerenci
 
 ### Automação com Eventos e Listeners
 - Atualização de relatórios e status com base em eventos como:
-  - **LeadCreated**: Automatizar tarefas ou enviar notificações.
-  - **TaskDue**: Notificar sobre tarefas pendentes.
-  - **LeadStatusChanged**: Atualizar relatórios automaticamente.
+  -  Automatizar tarefas ou enviar notificações.
+  -  Notificar sobre tarefas pendentes.
+  -  Atualizar relatórios automaticamente.
 
 ### Autorização e Permissões
 - Controle de permissões para diferentes tipos de usuários (admin, equipe de vendas).
