@@ -23,7 +23,7 @@ Esta aplicação é uma API de CRM desenvolvida com Laravel, destinada a gerenci
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/KauanJunker/CRM-API.git
    cd seu-repositorio
    ```
 
